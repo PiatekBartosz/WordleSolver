@@ -15,19 +15,19 @@ def check_guess(word, wordle):
 
     for i in range(len(word)):
         # i-th letter is a good guess
-        word2list = list(wordle)
+        word2list = list(word)
         # ignoring i-th word
-        word2list[i] = 0
+        wordle2list = list(wordle)
+        wordle2list[i] = 0
         # ignoring already guessed
         for j in range(len(output)):
             if output[j] != '_':
                 word2list[j] = 0
 
         if word2list[i] != 0:
-            if word[i] in word2list:
+            if word[i] in wordle2list:
                 output[i] = '?'
-            else:
-                output[i] = '_'
+
 
     return str(output)
 
@@ -43,12 +43,14 @@ def check_if_vaild(word):
 def main():
     wordle = ''
     # pick random word from popular 5-letter words
-    # with open('dataset/popular5words.txt') as ifile:
-    #     word_list = ifile.read().split("\n")
-    #     wordle = random.choice(word_list)
+    with open('dataset/popular5words.txt') as ifile:
+        word_list = ifile.read().split("\n")
+        wordle = random.choice(word_list)
     #     print("Chosen wordle: ", wordle)
-    wordle = 'error'
-    print(wordle)
+    # wordle = 'error'
+    # print(wordle)
+
+    found = False
 
     for i in range(6):
         user_input = input("Your guess: ").lower()
@@ -57,10 +59,14 @@ def main():
 
         if wordle == user_input:
             print("Found correct word!")
+            found = True
             break
         else:
             output = check_guess(user_input, wordle)
             print(output)
+
+    if not found:
+        print("Game over! The correct wordle was: " + wordle)
 
 
 if __name__ == "__main__":
